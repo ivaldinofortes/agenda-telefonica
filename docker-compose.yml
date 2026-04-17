@@ -1,0 +1,33 @@
+services:
+
+  php:
+    build: .
+    ports:
+      - "8888:80"
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: senha123
+      MYSQL_DATABASE: agenda_db
+      MYSQL_USER: agenda_user
+      MYSQL_PASSWORD: senha123
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - "8889:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: agenda_user
+      PMA_PASSWORD: senha123
+    depends_on:
+      - mysql
